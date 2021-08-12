@@ -50,7 +50,7 @@ class EmployeesController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteEmployee(@PathVariable Integer id) {
-        return employeeService.delete(id);
+    public void deleteEmployee(@PathVariable Integer id) {
+        employeeService.delete(id);
     }
 }

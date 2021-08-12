@@ -62,8 +62,8 @@ public class EmployeeService {
         return employee;
     }
 
-    public boolean delete(Integer id) {
-        return retiringEmployeeRepository.deleteEmployee(id);
+    public void delete(Integer id) {
+        employeeRepository.delete(getById(id));
     }
 
 }
