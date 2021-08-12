@@ -90,5 +90,22 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.name").value("Francis"));
     }
 
+    @Test
+    void should_return_employees_when_find_employee_by_gender_given_employee_gender() throws Exception {
+        //given
+        final Employee firstEmployee = new Employee(1, "Francis", 24, "male", 1999);
+        final Employee secondEmployee = new Employee(2, "Adrianne", 21, "female", 5000);
+        employeeRepository.save(firstEmployee);
+        employeeRepository.save(secondEmployee);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("gender", "female"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Adrianne"));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("gender", "male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Francis"));
+    }
 
 }
