@@ -11,13 +11,14 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    @Autowired
-    private final RetiringCompanyRepository retiringCompanyRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
 
-    public CompanyService(RetiringCompanyRepository retiringCompanyRepository) {
+    private CompanyRepository companyRepository;
+    private final RetiringCompanyRepository retiringCompanyRepository;
+
+
+    public CompanyService(RetiringCompanyRepository retiringCompanyRepository, CompanyRepository companyRepository) {
         this.retiringCompanyRepository = retiringCompanyRepository;
+        this.companyRepository = companyRepository;
     }
 
     public List<Company> getAllCompanies() {
@@ -25,11 +26,11 @@ public class CompanyService {
     }
 
     public Company getById(Integer companyId) {
-        return retiringCompanyRepository.findById(companyId);
+        return companyRepository.findById(companyId).orElse(null);
     }
 
     public List<Employee> getEmployeesById(Integer companyId) {
-        return companyRepository.findById(companyId).get().getEmployees();
+        return getById(companyId).getEmployees();
     }
 
     public List<Company> getByPageIndexAndPageSize(Integer pageIndex, int pageSize) {
