@@ -38,5 +38,19 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].salary").value("99"));
     }
 
+    @Test
+    void should_return_employee_when_get_given_employee_id() throws Exception {
+        //given
+        final Employee employee = new Employee(1, "Francis", 24, "male", 2027);
+        final Employee savedEmployee = employeeRepository.save(employee);
+        int id = savedEmployee.getId();
+        //when
+        //then
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Francis"));
+    }
+
 
 }
