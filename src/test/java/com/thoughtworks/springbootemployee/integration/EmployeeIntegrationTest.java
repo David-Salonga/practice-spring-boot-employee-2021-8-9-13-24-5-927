@@ -112,19 +112,17 @@ public class EmployeeIntegrationTest {
     void should_update_employee_when_put_given_employee_details() throws Exception {
         //Given
         final Employee employee = new Employee(1, "Francis", 20, "male", 2015);
-        final Employee savedEmployee = employeeRepository.save(employee);
-        int id = savedEmployee.getId();
-        String employeeInfoToUpdate = "{\n" +
+        final Employee getEmployeeFromDB = employeeRepository.save(employee);
+        int id = getEmployeeFromDB.getId();
+        String employeeToBeUpdated = "{\n" +
                                       "    \"age\": 24,\n" +
                                       "    \"salary\": 2000\n" +
                                       "}";
-
         //when
         //then
-
         mockMvc.perform(MockMvcRequestBuilders.put("/employees/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(employeeInfoToUpdate))
+                .content(employeeToBeUpdated))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.age").value(24))
                 .andExpect(jsonPath("$.salary").value(2000));
