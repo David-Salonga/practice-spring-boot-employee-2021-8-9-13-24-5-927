@@ -49,7 +49,24 @@ public class EmployeeIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Francis"));
+                .andExpect(jsonPath("$.name").value("Francis"))
+                .andExpect(jsonPath("$.age").value(24))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.salary").value(2027));
+    }
+
+    @Test
+    void should_return_employee_list_with_pagination_when_getByPageIndexAndPageSize_given_page_and_page_size() throws Exception {
+        //given
+        final Employee employee = new Employee(1, "Francis", 24, "male", 2021);
+        final Employee employee2 = new Employee(2, "Eric", 22, "female", 2009   );
+        employeeRepository.save(employee);
+        employeeRepository.save(employee2);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("page", "1").param("pageSize", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Francis"));
     }
 
 
