@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -67,6 +68,26 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Francis"));
+    }
+
+    @Test
+    void should_create_employee_when_call_create_employee_api() throws Exception {
+        //Given
+        String employee = "{\n" +
+                "    \"name\": \"Francis\",\n" +
+                "    \"age\": 24,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 2017\n" +
+                "}";
+
+        //when
+        //then
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Francis"));
     }
 
 
