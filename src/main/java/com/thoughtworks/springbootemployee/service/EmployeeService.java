@@ -30,7 +30,7 @@ public class EmployeeService {
     }
 
     public Employee getById(Integer id) {
-        return employeeRepository.findById(id).get();
+        return employeeRepository.findById(id).orElse(null);
     }
 
     public List<Employee> getByGender(String gender) {
@@ -41,8 +41,25 @@ public class EmployeeService {
         return employeeRepository.findAll(PageRequest.of(pageIndex - 1, pageSize)).getContent();
     }
 
-    public Employee update(Integer id, Employee employeeToBeUpdated) {
-        return retiringEmployeeRepository.updateEmployee(id, employeeToBeUpdated);
+    public Employee updateEmployee(Integer employeeId, Employee employeeUpdated) {
+        Employee employee = getById(employeeId);
+        return employeeRepository.save(updateEmployeeInformation(employee, employeeUpdated));
+    }
+
+    private Employee updateEmployeeInformation(Employee employee, Employee employeeUpdated) {
+        if (employeeUpdated.getAge() != null) {
+            employee.setAge(employeeUpdated.getAge());
+        }
+        if (employeeUpdated.getName() != null) {
+            employee.setName(employeeUpdated.getName());
+        }
+        if (employeeUpdated.getGender() != null) {
+            employee.setGender(employeeUpdated.getGender());
+        }
+        if (employeeUpdated.getSalary() != null) {
+            employee.setSalary(employeeUpdated.getSalary());
+        }
+        return employee;
     }
 
     public boolean delete(Integer id) {
