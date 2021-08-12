@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.repository.RetiringEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getByPageIndexAndPageSize(Integer pageIndex, Integer pageSize) {
-        return retiringEmployeeRepository.findByPageIndexAndPageSize(pageIndex, pageSize);
+        return employeeRepository.findAll(PageRequest.of(pageIndex - 1, pageSize)).getContent();
     }
 
     public Employee update(Integer id, Employee employeeToBeUpdated) {
