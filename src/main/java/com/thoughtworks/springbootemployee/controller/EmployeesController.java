@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.controller;
 import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.model.EmployeeRequest;
+import com.thoughtworks.springbootemployee.model.EmployeeResponse;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ class EmployeesController {
     }
 
     @GetMapping(path = "/{id}")
-    public Employee getEmployee(@PathVariable Integer id) {
-        return employeeService.getById(id);
+    public EmployeeResponse getEmployee(@PathVariable Integer id) {
+        return employeeMapper.toResponse(employeeService.getById(id));
     }
 
     @RequestMapping(params = "gender")

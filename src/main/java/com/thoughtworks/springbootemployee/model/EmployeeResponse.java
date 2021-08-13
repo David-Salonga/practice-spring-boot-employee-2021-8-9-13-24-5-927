@@ -1,12 +1,20 @@
 package com.thoughtworks.springbootemployee.model;
 
-public class EmployeeRequest {
+public class EmployeeResponse {
 
+    public Integer id;
     public String name;
     public Integer age;
     public String gender;
     public Integer salary;
-    public Integer companyId;
+//    public Integer companyId;
+
+    public EmployeeResponse() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -40,12 +48,16 @@ public class EmployeeRequest {
         this.salary = salary;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
+//    public Integer getCompanyId() {
+//        return companyId;
+//    }
+//
+//    public void setCompanyId(Integer companyId) {
+//        this.companyId = companyId;
+//    }
 
 }
