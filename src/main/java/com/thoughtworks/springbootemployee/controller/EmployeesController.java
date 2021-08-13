@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.model.EmployeeRequest;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ class EmployeesController {
 
     @Autowired
     private final EmployeeService employeeService;
+
+    @Autowired
+    EmployeeMapper employeeMapper;
 
     public EmployeesController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -45,8 +50,8 @@ class EmployeesController {
     }
 
     @PutMapping(path = "/{id}")
-    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee employeeToBeUpdated) {
-        return employeeService.updateEmployee(id, employeeToBeUpdated);
+    public Employee updateEmployee(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.updateEmployee(id, employeeMapper.toEntity(employeeRequest));
     }
 
     @DeleteMapping("/{id}")
