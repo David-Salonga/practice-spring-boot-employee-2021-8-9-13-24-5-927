@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class EmployeeIntegrationTest {
     EmployeeRepository employeeRepository;
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         employeeRepository.deleteAll();
     }
 
@@ -49,8 +50,8 @@ public class EmployeeIntegrationTest {
     void should_return_employee_when_get_given_employee_id() throws Exception {
         //given
         final Employee employee = new Employee(1, "Francis", 24, "male", 2027);
-        final Employee savedEmployee = employeeRepository.save(employee);
-        int id = savedEmployee.getId();
+        final Employee savedEmployeeFromDB = employeeRepository.save(employee);
+        int id = savedEmployeeFromDB.getId();
         //when
         //then
 
@@ -66,14 +67,16 @@ public class EmployeeIntegrationTest {
     void should_return_employee_list_with_pagination_when_getByPageIndexAndPageSize_given_page_and_page_size() throws Exception {
         //given
         final Employee employee = new Employee(1, "Francis", 24, "male", 2021);
-        final Employee employee2 = new Employee(2, "Eric", 22, "female", 2009   );
-        employeeRepository.save(employee);
-        employeeRepository.save(employee2);
+        final Employee employee2 = new Employee(2, "Princess", 22, "female", 2009);
+        final Employee employee3 = new Employee(3, "Prince", 21, "male", 2009);
+        employeeRepository.saveAll(Lists.list(employee, employee2, employee3));
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Francis"));
+                .andExpect(jsonPath("$[0].name").value("Francis"))
+                .andExpect(jsonPath("$[1].name").value("Princess"))
+                .andExpect(jsonPath("$[2].name").value("Prince"));
     }
 
     @Test
@@ -102,7 +105,7 @@ public class EmployeeIntegrationTest {
         final Employee firstEmployee = new Employee(1, "Francis", 24, "male", 1999);
         final Employee secondEmployee = new Employee(2, "Adrianne", 21, "female", 5000);
         employeeRepository.save(firstEmployee);
-        employeeRepository.save(secondEmployee);
+        employeeRepository.save(secondEmployee); //todo
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("gender", "female"))
@@ -121,15 +124,16 @@ public class EmployeeIntegrationTest {
         final Employee getEmployeeFromDB = employeeRepository.save(employee);
         int id = getEmployeeFromDB.getId();
         String employeeToBeUpdated = "{\n" +
-                                      "    \"age\": 24,\n" +
-                                      "    \"salary\": 2000\n" +
-                                      "}";
+                "    \"age\": 24,\n" +
+                "    \"salary\": 2000\n" +
+                "}";
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.put("/employees/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employeeToBeUpdated))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Francis"))
                 .andExpect(jsonPath("$.age").value(24))
                 .andExpect(jsonPath("$.salary").value(2000));
     }
