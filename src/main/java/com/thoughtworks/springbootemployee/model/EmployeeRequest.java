@@ -13,7 +13,7 @@ public class EmployeeRequest {
         this.age = age;
         this.gender = gender;
         this.salary = salary;
-    }
+    }//todo
 
     public EmployeeRequest() {
     }
