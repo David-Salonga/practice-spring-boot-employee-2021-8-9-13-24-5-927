@@ -1,10 +1,13 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.model.EmployeeResponse;
 import com.thoughtworks.springbootemployee.service.CompanyService;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,9 @@ public class CompaniesController {
     CompanyService companyService;
 
     @Autowired
+    EmployeeMapper employeeMapper;
+
+    @Autowired
     CompanyMapper companyMapper;
 
     public CompaniesController(CompanyService companyService) {
@@ -25,8 +31,8 @@ public class CompaniesController {
     }
 
     @GetMapping
-    public List<Company> getCompanies() {
-        return companyService.getAllCompanies();
+    public List<CompanyResponse> getCompanies() {
+        return companyMapper.companyToResponses(companyService.getAllCompanies());
     }
 
     @GetMapping(path = "/{companyId}")
@@ -35,8 +41,8 @@ public class CompaniesController {
     }
 
     @GetMapping(path = "/{companyId}/employees")
-    public List<Employee> getCompanyEmployees(@PathVariable Integer companyId) {
-        return companyService.getEmployeesById(companyId);
+    public List<EmployeeResponse> getCompanyEmployees(@PathVariable Integer companyId) {
+        return employeeMapper.employeesToResponse(companyService.getEmployeesById(companyId));
     }
 
     @GetMapping(params = {"pageIndex", "pageSize"})

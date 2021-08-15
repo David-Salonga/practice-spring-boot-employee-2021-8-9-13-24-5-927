@@ -4,6 +4,9 @@ import com.thoughtworks.springbootemployee.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CompanyMapper {
     public Company toEntity(CompanyRequest companyRequest) {
@@ -18,5 +21,18 @@ public class CompanyMapper {
         BeanUtils.copyProperties(company, companyResponse);
 
         return companyResponse;
+    }
+
+    public List<CompanyResponse> companyToResponses(List<Company> companies) {
+        List<CompanyResponse> companyResponses = new ArrayList<>();
+        companies.forEach(company -> {
+            CompanyResponse companyResponse = new CompanyResponse();
+            BeanUtils.copyProperties(company, companyResponse);
+            int count = company.getEmployees().size();
+            companyResponse.setEmployeesCount(count);
+            companyResponses.add(companyResponse);
+        });
+
+        return companyResponses;
     }
 }

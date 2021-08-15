@@ -8,6 +8,7 @@ public class CompanyResponse {
 
     Integer id;
     String companyName;
+    Integer employeeCount;
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
@@ -44,6 +45,12 @@ public class CompanyResponse {
         return employees;
     }
 
+
+    public Integer getEmployeeCount() {
+        return employeeCount;
+    }
+
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -57,4 +64,7 @@ public class CompanyResponse {
     }
 
 
+    public void setEmployeesCount(Integer employeeCount) {
+        this.employeeCount = employeeCount;
+    }
 }
