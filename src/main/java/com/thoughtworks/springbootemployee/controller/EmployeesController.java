@@ -36,8 +36,8 @@ class EmployeesController {
     }
 
     @RequestMapping(params = "gender")
-    public List<Employee> getGender(@RequestParam String gender) {
-        return employeeService.getByGender(gender);
+    public List<EmployeeResponse> getGender(@RequestParam String gender) {
+        return employeeMapper.employeesToResponse(employeeService.getByGender(gender));
     }
 
     @GetMapping(params = {"pageIndex", "pageSize"})
