@@ -1,11 +1,13 @@
 package com.thoughtworks.springbootemployee.mapper;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.model.EmployeeRequest;
 import com.thoughtworks.springbootemployee.model.EmployeeResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class EmployeeMapper {
@@ -22,5 +24,15 @@ public class EmployeeMapper {
         BeanUtils.copyProperties(employee, employeeResponse);
 
         return employeeResponse;
+    }
+
+    public List<EmployeeResponse> employeesToResponse(List<Employee> allEmployees) {
+        List<EmployeeResponse> employeeResponses = new ArrayList<>();
+        allEmployees.forEach(employee -> {
+            EmployeeResponse employeeResponse = new EmployeeResponse();
+            BeanUtils.copyProperties(employee, employeeResponse);
+            employeeResponses.add(employeeResponse);
+        });
+        return employeeResponses;
     }
 }

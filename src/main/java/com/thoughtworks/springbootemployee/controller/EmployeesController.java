@@ -26,8 +26,8 @@ class EmployeesController {
     }
 
     @GetMapping
-    public List<Employee> getEmployees() {
-        return employeeService.getAllEmployees();
+    public List<EmployeeResponse> getEmployees() {
+        return employeeMapper.employeesToResponse(employeeService.getAllEmployees());
     }
 
     @GetMapping(path = "/{id}")
@@ -59,4 +59,5 @@ class EmployeesController {
     public void deleteEmployee(@PathVariable Integer id) {
         employeeService.delete(id);
     }
+
 }
